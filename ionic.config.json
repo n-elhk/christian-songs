@@ -1,0 +1,7 @@
+{
+  "name": "christian-praise",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
