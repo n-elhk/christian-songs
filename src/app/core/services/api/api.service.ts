@@ -16,12 +16,12 @@ class SongConfig {
 })
 export class ApiService {
   /** Injection of {@link HttpClient}. */
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
   /** Injection of {@link NgZone}. */
-  private zone = inject(NgZone);
+  private readonly zone = inject(NgZone);
 
-  public songConfigs = new Map<string, SongConfig>();
+  public readonly songConfigs = new Map<string, SongConfig>();
 
   public getChant(songName: string): Observable<string> {
     const songConfig = this.songConfigs.get(songName);
