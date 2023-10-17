@@ -4,12 +4,16 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import {
+  toSignal
+} from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../core/services/api/api.service';
 import { NgFor, NgIf } from '@angular/common';
 import { FilterPipe } from '../common/pipes/filter';
 import { RouterLink } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +25,7 @@ import { RouterLink } from '@angular/router';
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      <ng-container *ngIf="chantsName() | filter : control.value as options">
+      <ng-container *ngIf="chantsName() | filter : searchTerm() as options">
         <ion-item
           [routerLink]="['../song', option]"
           *ngFor="let option of options.result"
@@ -52,9 +56,16 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class HomePage {
-  public apiService = inject(ApiService);
+  private readonly apiService = inject(ApiService);
 
-  public control = new FormControl('', { nonNullable: true });
+  public readonly control = new FormControl('', { nonNullable: true });
 
-  public chantsName = signal(Array.from(this.apiService.songConfigs.keys()));
+  private readonly searchTerm$ = this.control.valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+  );
+
+  public readonly searchTerm = toSignal(this.searchTerm$,  { initialValue: '' });
+
+  public readonly chantsName = signal(Array.from(this.apiService.songConfigs.keys()));
 }

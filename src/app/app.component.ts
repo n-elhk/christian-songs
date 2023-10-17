@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -6,8 +6,7 @@ import { IonicModule } from '@ionic/angular';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule],
 })
-export class AppComponent {
-  constructor() {}
-}
+export class AppComponent { }
