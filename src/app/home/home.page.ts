@@ -10,7 +10,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../core/services/api/api.service';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FilterPipe } from '../common/pipes/filter';
 import { RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -23,18 +23,19 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
         <ion-searchbar [formControl]="control" />
       </ion-toolbar>
     </ion-header>
-
+    
     <ion-content [fullscreen]="true">
-      <ng-container *ngIf="chantsName() | filter : searchTerm() as options">
-        <ion-item
-          [routerLink]="['../song', option]"
-          *ngFor="let option of options.result"
-        >
-          {{ option }}
-        </ion-item>
-      </ng-container>
+      @if (chantsName() | filter : searchTerm(); as options) {
+        @for (option of options.result; track option) {
+          <ion-item
+            [routerLink]="['../song', option]"
+            >
+            {{ option }}
+          </ion-item>
+        }
+      }
     </ion-content>
-  `,
+    `,
   styles: [
     `
       :host {
@@ -47,12 +48,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
-    NgFor,
     FilterPipe,
     RouterLink,
     IonicModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
 })
 export class HomePage {
@@ -65,7 +64,7 @@ export class HomePage {
     distinctUntilChanged(),
   );
 
-  public readonly searchTerm = toSignal(this.searchTerm$,  { initialValue: '' });
+  public readonly searchTerm = toSignal(this.searchTerm$, { initialValue: '' });
 
   public readonly chantsName = signal(Array.from(this.apiService.songConfigs.keys()));
 }

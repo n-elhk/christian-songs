@@ -1,4 +1,4 @@
-export interface SongFile {
+export type SongFile = {
   blob_id: string;
   commit_id: string;
   content: string;

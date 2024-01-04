@@ -8,6 +8,7 @@ import {
   RouteReuseStrategy,
   provideRouter,
   withComponentInputBinding,
+  withViewTransitions,
 } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -39,6 +40,6 @@ bootstrapApplication(AppComponent, {
     },
     provideHttpClient(),
     importProvidersFrom(IonicModule.forRoot({})),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
   ],
 });

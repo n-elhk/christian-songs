@@ -11,7 +11,6 @@ import { ApiService } from '../core/services/api/api.service';
 import { tap } from 'rxjs';
 
 @Component({
-  selector: 'app-song',
   template: ` <ion-header [translucent]="true">
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -38,7 +37,7 @@ import { tap } from 'rxjs';
   imports: [IonicModule],
 })
 export class SongPage implements OnInit {
-  public apiService = inject(ApiService);
+  private readonly apiService = inject(ApiService);
 
   @Input() name?: string;
 
