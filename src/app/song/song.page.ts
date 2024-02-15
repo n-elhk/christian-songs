@@ -1,14 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnInit,
   inject,
-  signal,
+  input,
 } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../core/services/api/api.service';
-import { tap } from 'rxjs';
+import { computedAsync } from 'ngxtension/computed-async';
 
 @Component({
   template: ` <ion-header [translucent]="true">
@@ -16,12 +14,19 @@ import { tap } from 'rxjs';
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>{{ name }}</ion-title>
+        <ion-title>{{ name() }}</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content [fullscreen]="true">
+      @defer (when song()) {
       <div class="lyrics" [innerText]="song()"></div>
+      } @loading {
+      <ion-item>
+        <ion-label>Chargement</ion-label>
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-item>
+      }
     </ion-content>`,
   styles: [
     `
@@ -36,19 +41,10 @@ import { tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule],
 })
-export class SongPage implements OnInit {
+export class SongPage {
   private readonly apiService = inject(ApiService);
 
-  @Input() name?: string;
+  readonly name = input.required<string>();
 
-  public song = signal('');
-
-  public ngOnInit(): void {
-    if (this.name) {
-      this.apiService
-        .getChant(this.name)
-        .pipe(tap((song) => this.song.set(song)))
-        .subscribe();
-    }
-  }
+  readonly song = computedAsync(() => this.apiService.getSong(this.name()));
 }

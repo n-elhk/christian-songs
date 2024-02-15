@@ -21,9 +21,9 @@ export class ApiService {
   /** Injection of {@link NgZone}. */
   private readonly zone = inject(NgZone);
 
-  public readonly songConfigs = new Map<string, SongConfig>();
+  readonly songConfigs = new Map<string, SongConfig>();
 
-  public getChant(songName: string): Observable<string> {
+  public getSong(songName: string): Observable<string> {
     const songConfig = this.songConfigs.get(songName);
 
     if (!songConfig) {
@@ -61,13 +61,12 @@ export class ApiService {
 
           songConfig.lyrics = spacedText;
 
-
           return songConfig.lyrics;
         })
       );
   }
 
-  public getChants(): Observable<string> {
+  public getSongs(): Observable<string> {
     return this.httpClient
       .get(
         `https://docs.google.com/spreadsheets/d/199T2yuP-GQ-tjfMmsagWFQgXMJSJGiBWrM_v_lESg3U/gviz/tq?tqx=out:csv&sheet=chants`,
@@ -85,7 +84,7 @@ export class ApiService {
   }
 
   public initializeSong(): Observable<void> {
-    return this.getChants().pipe(
+    return this.getSongs().pipe(
       map((chaine) => {
         this.zone.runOutsideAngular(() => {
           const regex = /,(?=[\w\d\s])/g;
