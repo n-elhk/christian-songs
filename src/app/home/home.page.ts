@@ -9,7 +9,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../core/services/api/api.service';
 
-import { FilterPipe } from '../common/pipes/filter';
+import { TitleFilterPipe } from '../common/pipes/title-filter';
 import { RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, from } from 'rxjs';
 
@@ -22,7 +22,7 @@ import { debounceTime, distinctUntilChanged, from } from 'rxjs';
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      @for (option of chantsName() | filter : searchTerm(); track option) {
+      @for (option of chantsName() | titleFilter : searchTerm(); track option) {
       <ion-item [routerLink]="['../song', option]">
         {{ option }}
       </ion-item>
@@ -40,7 +40,7 @@ import { debounceTime, distinctUntilChanged, from } from 'rxjs';
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FilterPipe, RouterLink, IonicModule, ReactiveFormsModule],
+  imports: [TitleFilterPipe, RouterLink, IonicModule, ReactiveFormsModule],
 })
 export class HomePage {
   private readonly apiService = inject(ApiService);
