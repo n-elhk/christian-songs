@@ -1,20 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone, inject } from '@angular/core';
 import { Observable, map, of, throwError } from 'rxjs';
-import { SongFile } from '../../interfaces/song';
+import { SongFile } from '../../../interfaces/song';
 
 class SongConfig {
   constructor(
     public autor: string,
     public fileName: string,
-    public lyrics: string
+    public lyrics: string,
   ) {}
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class SongService {
   /** Injection of {@link HttpClient}. */
   private readonly httpClient = inject(HttpClient);
 
@@ -38,12 +38,12 @@ export class ApiService {
 
     return this.httpClient
       .get<SongFile>(
-        `https://gitlab.com/api/v4/projects/35860066/repository/files/chants${uri}?ref=main`
+        `https://gitlab.com/api/v4/projects/35860066/repository/files/chants${uri}?ref=main`,
       )
       .pipe(
         map((result) => {
           const base64Bytes = Uint8Array.from(atob(result.content), (c) =>
-            c.charCodeAt(0)
+            c.charCodeAt(0),
           );
 
           // Créer un décodeur UTF-8
@@ -56,13 +56,13 @@ export class ApiService {
           const spacedText =
             decodedString.replace(
               regex,
-              (match, captureGroup) => captureGroup
+              (match, captureGroup) => captureGroup,
             ) + '\n';
 
           songConfig.lyrics = spacedText;
 
           return songConfig.lyrics;
-        })
+        }),
       );
   }
 
@@ -73,13 +73,13 @@ export class ApiService {
         {
           responseType: 'arraybuffer',
           observe: 'body',
-        }
+        },
       )
       .pipe(
         map((buffer) => {
           const enc = new TextDecoder('utf-8');
           return enc.decode(buffer);
-        })
+        }),
       );
   }
 
@@ -104,11 +104,11 @@ export class ApiService {
             const column = line.split(',');
             this.songConfigs.set(
               column[0],
-              new SongConfig(column[1], column[2], '')
+              new SongConfig(column[1], column[2], ''),
             );
           });
         });
-      })
+      }),
     );
   }
 }

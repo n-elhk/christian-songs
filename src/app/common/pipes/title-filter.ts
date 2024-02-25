@@ -25,7 +25,7 @@ export class TitleFilterPipe implements PipeTransform {
       const distance = searchWithSpellingErrors(
         searchTerm.toLowerCase(),
         truncatedTitle.toLowerCase(),
-        4
+        4,
       );
 
       const match =
@@ -40,7 +40,7 @@ export class TitleFilterPipe implements PipeTransform {
 
     // Trier de la plus petite distance à la plus grande (du plus pertinent aux moins pertinents)
     const sortedDistances = distances.toSorted(
-      (a, b) => a.distance - b.distance
+      (a, b) => a.distance - b.distance,
     );
 
     for (const { title } of sortedDistances) {
@@ -64,7 +64,7 @@ function getTruncatedTitle(searchTerm: string, title: string): string {
 function searchWithSpellingErrors(
   query: string,
   title: string,
-  tolerance: number
+  tolerance: number,
 ) {
   const distance = levenshteinDistance(query, title);
 
