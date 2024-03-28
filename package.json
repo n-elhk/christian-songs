@@ -28,7 +28,7 @@
     "@capacitor/ios": "^5.7.0",
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
-    "@ionic/angular": "^7.7.3",
+    "@ionic/angular": "^7.8.2",
     "@ngrx/operators": "^17.1.1",
     "@ngrx/signals": "^17.1.1",
     "ionicons": "^7.2.2",
