@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'christian-songs',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
-  }
+    androidScheme: 'https',
+  },
 };
 
 export default config;

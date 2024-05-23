@@ -2,8 +2,9 @@ import {
   APP_INITIALIZER,
   enableProdMode,
   importProvidersFrom,
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { DomSanitizer, bootstrapApplication } from '@angular/platform-browser';
 import {
   RouteReuseStrategy,
   provideRouter,
@@ -16,13 +17,32 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http';
-import { ApiService } from './app/core/services/api/api.service';
+import { SongService } from './app/common/services/api/song/song.service';
+import { CfIconRegistery } from './app/shared/icon';
 
 if (environment.production) {
   enableProdMode();
 }
 
-export function initializeSong(aelfService: ApiService) {
+function initializeIcon(
+  iconRegistery: CfIconRegistery,
+  domSanitizer: DomSanitizer
+) {
+  return () => {
+    const baseSvg = 'assets/icon';
+
+    const icons = [{ name: 'bible', path: `${baseSvg}/bible.svg` }];
+
+    icons.forEach(icon => {
+      return iconRegistery.addSvgIcon(
+        icon.name,
+        domSanitizer.bypassSecurityTrustResourceUrl(icon.path)
+      );
+    });
+  };
+}
+
+export function initializeSong(aelfService: SongService) {
   return () => {
     return aelfService.initializeSong();
   };
@@ -31,15 +51,21 @@ export function initializeSong(aelfService: ApiService) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-
     {
       provide: APP_INITIALIZER,
       useFactory: initializeSong,
-      deps: [ApiService],
+      deps: [SongService],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeIcon,
+      deps: [CfIconRegistery, DomSanitizer],
       multi: true,
     },
     provideHttpClient(),
     importProvidersFrom(IonicModule.forRoot({})),
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
   ],
 });

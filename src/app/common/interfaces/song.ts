@@ -10,4 +10,10 @@ export type SongFile = {
   last_commit_id: string;
   ref: string;
   size: number;
-}
+};
+
+export type Song = {
+  author: string;
+  title: string;
+  filename: string;
+};

@@ -9,4 +9,4 @@ import { IonicModule } from '@ionic/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule],
 })
-export class AppComponent { }
+export class AppComponent {}

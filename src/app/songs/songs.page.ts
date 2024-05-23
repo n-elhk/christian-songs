@@ -2,30 +2,33 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ApiService } from '../core/services/api/api.service';
-
+import { SongService } from '../common/services/api/song/song.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { TitleFilterPipe } from '../common/pipes/title-filter';
 import { RouterLink } from '@angular/router';
-import { debounceTime, distinctUntilChanged, from } from 'rxjs';
 
 @Component({
   template: `
     <ion-header [translucent]="true">
       <ion-toolbar>
-        <ion-searchbar [formControl]="control" />
+        <ion-searchbar
+          placeholder="Cherchez un chant"
+          [formControl]="control"
+        />
       </ion-toolbar>
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      @for (option of chantsName() | titleFilter : searchTerm(); track option) {
-      <ion-item [routerLink]="['../song', option]">
-        {{ option }}
-      </ion-item>
+      @for (option of chantsName() | titleFilter: searchTerm(); track option) {
+        <ion-item [routerLink]="['../songs', option]">
+          {{ option }}
+        </ion-item>
       }
     </ion-content>
   `,
@@ -42,17 +45,17 @@ import { debounceTime, distinctUntilChanged, from } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TitleFilterPipe, RouterLink, IonicModule, ReactiveFormsModule],
 })
-export class HomePage {
-  private readonly apiService = inject(ApiService);
+export class SongsPage {
+  private readonly songService = inject(SongService);
 
   readonly control = new FormControl('', { nonNullable: true });
 
   private readonly searchTerm$ = this.control.valueChanges.pipe(
     debounceTime(500),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   readonly searchTerm = toSignal(this.searchTerm$, { initialValue: '' });
 
-  readonly chantsName = signal(Array.from(this.apiService.songConfigs.keys()));
+  readonly chantsName = signal(Array.from(this.songService.songConfigs.keys()));
 }
