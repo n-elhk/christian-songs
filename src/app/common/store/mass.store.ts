@@ -35,12 +35,11 @@ export const MassesStore = signalStore(
       const mass = masses()[selectedDate()];
 
       if (mass) {
-        return mass.messes[0].lectures.filter(lecture =>
-          [
-            ReadingEnum.lECTURE_1,
-            ReadingEnum.lECTURE_2,
-            ReadingEnum.PSAUME,
-          ].includes(lecture.type)
+        return mass.messes[0].lectures.filter(
+          lecture =>
+            ReadingEnum.LECTURE_1 === lecture.type ||
+            ReadingEnum.LECTURE_2 === lecture.type ||
+            ReadingEnum.PSAUME === lecture.type
         );
       }
       return [];

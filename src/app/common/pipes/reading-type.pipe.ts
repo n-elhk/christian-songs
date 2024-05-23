@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ReadingEnum } from '../interfaces/mass';
+import { ReadingEnum, ValuesOf } from '../interfaces/mass';
 
 @Pipe({
   name: 'readingType',
@@ -7,7 +7,7 @@ import { ReadingEnum } from '../interfaces/mass';
   standalone: true,
 })
 export class ReadingTypePipe implements PipeTransform {
-  public transform(type: ReadingEnum | undefined): string {
+  public transform(type: ValuesOf<typeof ReadingEnum> | undefined): string {
     switch (type) {
       case ReadingEnum.EVANGILE:
         return 'Évangile';
@@ -15,10 +15,10 @@ export class ReadingTypePipe implements PipeTransform {
       case ReadingEnum.PSAUME:
         return 'Psaume';
 
-      case ReadingEnum.lECTURE_1:
+      case ReadingEnum.LECTURE_1:
         return '1ère lecture';
 
-      case ReadingEnum.lECTURE_2:
+      case ReadingEnum.LECTURE_2:
         return '2ème lecture';
     }
     return '';

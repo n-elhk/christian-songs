@@ -5,7 +5,7 @@ import {
   input,
 } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { computedAsync } from 'ngxtension/computed-async';
+import { derivedAsync } from 'ngxtension/derived-async';
 import { SongService } from 'src/app/common/services/api/song/song.service';
 
 @Component({
@@ -46,5 +46,5 @@ export class LyricPage {
 
   readonly name = input.required<string>();
 
-  readonly song = computedAsync(() => this.songService.getSong(this.name()));
+  readonly song = derivedAsync(() => this.songService.getSong(this.name()));
 }

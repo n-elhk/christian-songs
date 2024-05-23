@@ -9,7 +9,7 @@ type Mass = {
 };
 
 type Reading = {
-  type: ReadingEnum;
+  type: ValuesOf<typeof ReadingEnum>;
   titre: string;
   contenu: string; // InnerHTML;
   ref: string;
@@ -34,9 +34,11 @@ type Information = {
   ligne3: string;
 };
 
-export enum ReadingEnum {
-  lECTURE_1 = 'lecture_1',
-  lECTURE_2 = 'lecture_2',
-  EVANGILE = 'evangile',
-  PSAUME = 'psaume',
-}
+export const ReadingEnum = {
+  LECTURE_1:'lecture_1',
+  LECTURE_2: 'lecture_2',
+  EVANGILE:'evangile',
+  PSAUME:'psaume',
+} as const
+
+export type ValuesOf<T> = T[keyof T];

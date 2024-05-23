@@ -2,6 +2,7 @@ import {
   APP_INITIALIZER,
   enableProdMode,
   importProvidersFrom,
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { DomSanitizer, bootstrapApplication } from '@angular/platform-browser';
 import {
@@ -30,9 +31,7 @@ function initializeIcon(
   return () => {
     const baseSvg = 'assets/icon';
 
-    const icons = [
-      { name: 'bible', path: `${baseSvg}/bible.svg` },
-    ];
+    const icons = [{ name: 'bible', path: `${baseSvg}/bible.svg` }];
 
     icons.forEach(icon => {
       return iconRegistery.addSvgIcon(
@@ -52,7 +51,6 @@ export function initializeSong(aelfService: SongService) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-
     {
       provide: APP_INITIALIZER,
       useFactory: initializeSong,
@@ -67,6 +65,7 @@ bootstrapApplication(AppComponent, {
     },
     provideHttpClient(),
     importProvidersFrom(IonicModule.forRoot({})),
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
   ],
 });
