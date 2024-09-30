@@ -14,7 +14,7 @@ type Reading = {
   contenu: string; // InnerHTML;
   ref: string;
   intro_lue: string | null;
-  verset_evangile: InnerHTML;
+  verset_evangile: string;
   ref_verset: string;
 };
 

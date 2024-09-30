@@ -27,7 +27,7 @@ const initialState: MassesState = {
 };
 
 export const MassesStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withState(initialState),
   withComputed(({ masses, selectedDate }) => ({
     currentMass: computed(() => masses()[selectedDate()]),
