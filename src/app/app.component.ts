@@ -1,12 +1,23 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {
+    IonTabBar,
+    IonTabs,
+    IonTabButton,
+    IonIcon,
+    IonApp,
+} from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        IonApp,
+        IonTabButton,
+        IonTabBar,
+        IonIcon,
+        IonTabs,
+    ]
 })
-export class AppComponent {}
+export class AppComponent { }

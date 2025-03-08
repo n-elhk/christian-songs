@@ -4,8 +4,8 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { derivedAsync } from 'ngxtension/derived-async';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { IonButtons, IonToolbar, IonHeader, IonContent, IonBackButton, IonTitle, IonLabel, IonItem, IonSpinner } from '@ionic/angular/standalone';
 import { SongService } from 'src/app/common/services/api/song/song.service';
 
 @Component({
@@ -19,12 +19,17 @@ import { SongService } from 'src/app/common/services/api/song/song.service';
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      @defer (when song()) {
-        <div class="lyrics" [innerText]="song()"></div>
-      } @loading {
+    <!-- @let songResourceValue = songResource(); -->
+      @if(!songResource.isLoading() && songResource.hasValue()){
+        <div class="lyrics" [innerText]="songResource.value()"></div>
+      } @else if (songResource.isLoading()) {
         <ion-item>
           <ion-label>Chargement</ion-label>
           <ion-spinner name="crescent"></ion-spinner>
+        </ion-item>
+      } @else if (songResource.error()) {
+        <ion-item>
+          <ion-label>Oups une erreur s'est produite</ion-label>
         </ion-item>
       }
     </ion-content>`,
@@ -37,14 +42,24 @@ import { SongService } from 'src/app/common/services/api/song/song.service';
       }
     `,
   ],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule],
+  imports: [
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonContent,
+    IonBackButton,
+    IonTitle,
+    IonLabel,
+    IonSpinner,
+    IonItem
+  ]
 })
 export class LyricPage {
   private readonly songService = inject(SongService);
-
   readonly name = input.required<string>();
-
-  readonly song = derivedAsync(() => this.songService.getSong(this.name()));
+  readonly songResource = rxResource({
+    request: () => ({ name: this.name() }),
+    loader: ({ request }) => this.songService.getSong(request.name),
+  });
 }

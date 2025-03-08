@@ -1,9 +1,4 @@
-import {
-  APP_INITIALIZER,
-  enableProdMode,
-  importProvidersFrom,
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
+import { enableProdMode, importProvidersFrom, provideExperimentalZonelessChangeDetection, inject, provideAppInitializer } from '@angular/core';
 import { DomSanitizer, bootstrapApplication } from '@angular/platform-browser';
 import {
   RouteReuseStrategy,
@@ -19,6 +14,7 @@ import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 import { SongService } from './app/common/services/api/song/song.service';
 import { CfIconRegistery } from './app/shared/icon';
+import { provideIonicAngular } from '@ionic/angular/standalone';
 
 if (environment.production) {
   enableProdMode();
@@ -51,20 +47,16 @@ export function initializeSong(aelfService: SongService) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeSong,
-      deps: [SongService],
-      multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeIcon,
-      deps: [CfIconRegistery, DomSanitizer],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (initializeSong)(inject(SongService));
+      return initializerFn();
+    }),
+    provideAppInitializer(() => {
+      const initializerFn = (initializeIcon)(inject(CfIconRegistery), inject(DomSanitizer));
+      return initializerFn();
+    }),
     provideHttpClient(),
-    importProvidersFrom(IonicModule.forRoot({})),
+    provideIonicAngular(),
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
   ],

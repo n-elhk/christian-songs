@@ -4,7 +4,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonHeader, IonButtons, IonBackButton, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { injectQueryParams } from 'ngxtension/inject-query-params';
 import { MassesStore } from 'src/app/common/store/mass.store';
 import { StripHtmlPipe } from '../../common/pipes/strip-html.pipe';
@@ -31,7 +31,6 @@ import { ReadingTypePipe } from '../../common/pipes/reading-type.pipe';
       }
     </ion-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   styles: `
     .reading-item {
       padding: 1rem;
@@ -41,7 +40,16 @@ import { ReadingTypePipe } from '../../common/pipes/reading-type.pipe';
     }
   `,
   providers: [MassesStore],
-  imports: [IonicModule, StripHtmlPipe, ReadingTypePipe],
+  imports: [
+    IonHeader,
+    IonButtons,
+    IonTitle,
+    IonBackButton,
+    IonToolbar,
+    IonContent,
+    StripHtmlPipe,
+    ReadingTypePipe
+  ]
 })
 export class ReadingPage {
   private readonly massesStore = inject(MassesStore);

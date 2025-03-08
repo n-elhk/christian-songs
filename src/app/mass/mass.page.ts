@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonCardContent, IonCard, IonContent, IonLabel } from '@ionic/angular/standalone';
 
 import { RouterLink } from '@angular/router';
 import { CfIcon } from '../shared/icon';
@@ -66,9 +66,8 @@ import { ReadingTypePipe } from '../common/pipes/reading-type.pipe';
       --ion-item-background: transparent;
     }
   `,
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IonicModule, CfIcon, ReadingTypePipe],
+  imports: [RouterLink, CfIcon, ReadingTypePipe, IonCardContent, IonCard, IonContent, IonLabel]
 })
 export class MassPage {
   private readonly massesStore = inject(MassesStore);

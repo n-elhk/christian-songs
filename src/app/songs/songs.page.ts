@@ -14,7 +14,7 @@ import { TitleFilterPipe } from '../common/pipes/title-filter';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  template: `
+    template: `
     <ion-header [translucent]="true">
       <ion-toolbar>
         <ion-searchbar
@@ -32,18 +32,17 @@ import { RouterLink } from '@angular/router';
       }
     </ion-content>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         ion-searchbar {
           padding-block: 15px;
         }
       }
     `,
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TitleFilterPipe, RouterLink, IonicModule, ReactiveFormsModule],
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [TitleFilterPipe, RouterLink, IonicModule, ReactiveFormsModule]
 })
 export class SongsPage {
   private readonly songService = inject(SongService);
