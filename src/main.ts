@@ -1,4 +1,4 @@
-import { enableProdMode, importProvidersFrom, provideExperimentalZonelessChangeDetection, inject, provideAppInitializer } from '@angular/core';
+import { enableProdMode, provideZonelessChangeDetection, inject, provideAppInitializer } from '@angular/core';
 import { DomSanitizer, bootstrapApplication } from '@angular/platform-browser';
 import {
   RouteReuseStrategy,
@@ -25,7 +25,7 @@ function initializeIcon(
   domSanitizer: DomSanitizer
 ) {
   return () => {
-    const baseSvg = 'assets/icon';
+    const baseSvg = '/icon';
 
     const icons = [{ name: 'bible', path: `${baseSvg}/bible.svg` }];
 
@@ -57,7 +57,7 @@ bootstrapApplication(AppComponent, {
     }),
     provideHttpClient(),
     provideIonicAngular(),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
   ],
 });

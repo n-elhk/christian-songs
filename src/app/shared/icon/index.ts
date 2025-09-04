@@ -1,2 +1,2 @@
-export * from './icon.component';
-export * from './icon-registery';
+export { CfIcon } from './icon.component';
+export { CfIconRegistery, IconOptions } from './icon-registery';

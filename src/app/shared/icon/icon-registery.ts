@@ -1,9 +1,10 @@
-import { DOCUMENT } from '@angular/common';
+
 import {
   ErrorHandler,
   Injectable,
   SecurityContext,
   inject,
+  DOCUMENT
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';

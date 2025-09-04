@@ -59,7 +59,7 @@ export class LyricPage {
   private readonly songService = inject(SongService);
   readonly name = input.required<string>();
   readonly songResource = rxResource({
-    request: () => ({ name: this.name() }),
-    loader: ({ request }) => this.songService.getSong(request.name),
+    params: () => ({ name: this.name() }),
+    stream: ({ params }) => this.songService.getSong(params.name),
   });
 }

@@ -12,7 +12,7 @@ import { AelfService } from '../services/api/aelf/aelf.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, switchMap, tap } from 'rxjs';
-import { reverseDate } from '../helpers/zero-pad';
+import { reverseDate } from '../functions/zero-pad';
 
 type MassesState = {
   selectedDate: string;

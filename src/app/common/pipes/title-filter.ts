@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { search } from '../helpers/search-algo';
+import { search } from '../functions/search-algo';
 
 @Pipe({
   name: 'titleFilter',

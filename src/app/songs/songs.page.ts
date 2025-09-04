@@ -2,19 +2,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  input,
-  signal,
 } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { SongService } from '../common/services/api/song/song.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { TitleFilterPipe } from '../common/pipes/title-filter';
+import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { searchWithFuse } from '../common/functions/fuse';
 
 @Component({
-    template: `
+  template: `
     <ion-header [translucent]="true">
       <ion-toolbar>
         <ion-searchbar
@@ -25,36 +23,37 @@ import { RouterLink } from '@angular/router';
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      @for (option of chantsName() | titleFilter: searchTerm(); track option) {
-        <ion-item [routerLink]="['../songs', option]">
-          {{ option }}
+      @for (song of songFiltered(); track song.title) {
+        <ion-item [routerLink]="['../songs', song.title]">
+          {{ song.title }}
         </ion-item>
       }
     </ion-content>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         ion-searchbar {
           padding-block: 15px;
         }
       }
     `,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [TitleFilterPipe, RouterLink, IonicModule, ReactiveFormsModule]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink, IonicModule, ReactiveFormsModule]
 })
 export class SongsPage {
   private readonly songService = inject(SongService);
 
   readonly control = new FormControl('', { nonNullable: true });
 
-  private readonly searchTerm$ = this.control.valueChanges.pipe(
+  private readonly songFiltered$ = this.control.valueChanges.pipe(
     debounceTime(500),
     distinctUntilChanged(),
+    map((searchTerm) => searchWithFuse(this.chantsName, { searchTerm, maxResults: 20 }, ['title'])),
   );
 
-  readonly searchTerm = toSignal(this.searchTerm$, { initialValue: '' });
+  readonly songFiltered = toSignal(this.songFiltered$, { initialValue: [] });
 
-  readonly chantsName = signal(Array.from(this.songService.songConfigs.keys()));
+  readonly chantsName = Array.from(this.songService.songConfigs.keys()).map((title) => ({ title }));
 }

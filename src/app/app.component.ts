@@ -6,6 +6,8 @@ import {
     IonIcon,
     IonApp,
 } from '@ionic/angular/standalone';
+import { musicalNotes } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
     selector: 'app-root',
@@ -18,6 +20,13 @@ import {
         IonTabBar,
         IonIcon,
         IonTabs,
+
     ]
 })
-export class AppComponent { }
+export class AppComponent {
+    constructor() {
+        addIcons({
+            musicalNotes
+        });
+    }
+}

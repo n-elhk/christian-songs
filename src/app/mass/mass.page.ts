@@ -22,7 +22,7 @@ import { ReadingTypePipe } from '../common/pipes/reading-type.pipe';
           <img
             aria-hidden="true"
             alt="Silhouette of mountains"
-            src="assets/images/genesis-1.webp" />
+            src="/images/genesis-1.webp" />
 
           <ion-card-content>
             <div style="display: flex; align-items:center; gap:1rem">
@@ -49,7 +49,7 @@ import { ReadingTypePipe } from '../common/pipes/reading-type.pipe';
               <cf-icon
                 svgName="bible"
                 slot="start"
-                aria-hidden="true"></cf-icon>
+                aria-hidden="true" />
 
               <ion-label color="dark">
                 <h2>{{ evangileValue.type | readingType }}</h2>
